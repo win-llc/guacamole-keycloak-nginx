@@ -1,0 +1,12 @@
+<user-mapping>
+
+	<authorize username="admin@winllc-dev.com" password="admin">
+<connection name="Jumpbox RDP">
+    <protocol>rdp</protocol>
+    <param name="hostname">192.168.1.106</param>
+    <param name="port">3389</param>
+    <param name="ignore-cert">true</param>
+</connection>
+	</authorize>
+
+</user-mapping>
