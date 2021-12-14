@@ -111,7 +111,8 @@ services:
       - KEYCLOAK_PASSWORD=admin
       - KEYCLOAK_USER='admin'
       - PROXY_ADDRESS_FORWARDING=true
-        #      - KEYCLOAK_IMPORT="/tmp/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled"
+        #- KEYCLOAK_IMPORT="/tmp/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled"
+        #- KEYCLOAK_MIGRATION_STRATEGY=OVERWRITE_EXISTING
     hostname: keycloak
     ports:
       - "8181:8080"
@@ -126,6 +127,7 @@ services:
       - ./init/cacerts:/usr/lib/jvm/java-11-openjdk-11.0.12.0.7-0.el8_4.x86_64/lib/security/cacerts
       - ./config/keycloak/guacamole-client.json:/opt/jboss/keycloak/standalone/configuration/guacamole-client.json
       - ./config/keycloak/realm-export.json:/tmp/realm-export.json
+        #- ./config/keycloak/scripts:/opt/jboss/startup-scripts
       - ./extras/keycloak-otp-login/target/keycloak-otp-login.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-otp-login.jar
     networks:
       guac:
