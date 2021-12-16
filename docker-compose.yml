@@ -56,7 +56,7 @@ services:
       OPENID_REDIRECT_URI: https://guac-keycloak.winllc-dev.com:8443/guacamole
       # OPENID_CLAIM_TYPE: sub
       # OPENID_CLAIM_TYPE: preferred_username
-      OPENID_USERNAME_CLAIM_TYPE: email
+      OPENID_USERNAME_CLAIM_TYPE: preferred_username
       OPENID_GROUPS_CLAIM_TYPE: ad-groups
       OPENID_SCOPE: openid profile
       OPENID_ALLOWED_CLOCK_SKEW: 99999
