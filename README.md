@@ -68,11 +68,11 @@ grep -R winllc-dev.com | grep -v Binary
 
 ## To use
 
-Then browsed to:
+Then browse to:
 
-https://guacamole.rfa.net:8443/guacamole
+https://<host.domain>:8443/guacamole
 
-https://keycloak.rfa.net:8443
+https://<host.domain>:8443/auth
 
 ### To add users
 
