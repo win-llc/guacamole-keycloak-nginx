@@ -1,5 +1,5 @@
-# guacamole-compose
-Docker compose project with oeycloak and guacamole
+# guacamole-keycloak-nginx
+Docker compose project with keycloak and guacamole. Based off of https://github.com/cynthia-rempel/guacamole-compose
 
 ## To get started with no configurations, run 
 
@@ -7,12 +7,6 @@ Docker compose project with oeycloak and guacamole
 ./setup.sh
 
 docker-compose up
-```
-
-Requires name resolution to work, so added the following entry to `/etc/hosts`:
-
-```
-127.0.1.1 guacamole.rfa.net keycloak.rfa.net
 ```
 
 ### Trust the certs
@@ -30,7 +24,7 @@ docker exec guacamole-compose_keycloak_1 \
   -s enabled=true \
   -s email=guacadmin@guacadmin \
   -r master \
-  --server https://keycloak.rfa.net:8443/auth \
+  --server https://<host.domain>:8443/auth \
   --realm master \
   --user admin \
   --password admin
@@ -42,7 +36,7 @@ docker exec guacamole-compose_keycloak_1 \
   --username guacadmin@guacadmin \
   --new-password guacadmin \
   -r master \
-  --server https://keycloak.rfa.net:8443/auth \
+  --server https://<host.domain>:8443/auth \
   --realm master \
   --user admin \
   --password admin
@@ -54,28 +48,11 @@ docker exec guacamole-compose_keycloak_1 \
   --uusername guacadmin@guacadmin \
   --rolename admin \
   -r master \
-  --server https://keycloak.rfa.net:8443/auth \
+  --server https://<host.domain>:8443/auth \
   --realm master \
   --user admin \
   --password admin
 ```
-### Add the guacamole-client
-
-config/keycloak/guacamole-client.json
-
-```
-docker exec guacamole-compose_keycloak_1 \
-  /opt/jboss/keycloak/bin/kcadm.sh \
-  create clients \
-  --file guacamole-client.json \
-  -r master \
-  --server https://keycloak.rfa.net:8443/auth \
-  --realm master \
-  --user admin \
-  --password admin
-```
-
-### TODO: add "read-only" role for keycloak
 
 In current configuration all qery and read-roles.
 
@@ -83,14 +60,11 @@ In current configuration all qery and read-roles.
 
 ## To customize:
 
-Find all instances of rfa.net, and replace them to you're liking
+Find all instances of winllc-dev.com, and replace them to you're liking
 
 ```
-grep -R rfa.net | grep -v Binary
+grep -R winllc-dev.com | grep -v Binary
 ```
-
-**Please note:**  haproxy sni requires *uniq* certs for *each* backend so
-you'll need separate certs for guacamole and keycloak
 
 ## To use
 
@@ -122,7 +96,7 @@ Reference: https://guacamole.apache.org/doc/gug/openid-auth.html
 
 To add users to postgres, add them through the guacamole application.
 
-https://guacamole.rfa.net:8443/guacamole
+https://<host.domain>:8443/guacamole
 
 username: *guacadmin@guacadmin*
 
@@ -159,7 +133,7 @@ connection must be checked for the user to create a connection.
 
 #### Adding user to Keycloak
 
-https://keycloak.rfa.net:8443
+https://<host.domain>:8443/auth
 
 Administration Console
 
