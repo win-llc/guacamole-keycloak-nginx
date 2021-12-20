@@ -9,7 +9,12 @@ docker-compose -v
 echo "checking for docker"
 docker -v
 echo "checking for keytool"
-keytool -v
+keytool -h
+
+if test -z "$SERVER_FQDN" ; then
+  echo "Set the environment variable SERVER_FQDN"
+  exit 1
+fi
 
 # create directories
 mkdir -p {data/guacamole,data/keycloak,init,openid} 
@@ -55,8 +60,8 @@ openssl req \
   -x509 \
   -days 365 \
   -out init/guacamole.crt \
-  -subj "/C=US/ST=VA/L=Alexandria/O=WIN LLC/OU=Dev/CN=guac-keycloak.winllc-dev.com"
-  -addext "subjectAltName = DNS:guac-keycloak.winllc-dev.com" \
+  -subj "/C=US/OU=Dev/CN=$SERVER_FQDN"
+  -addext "subjectAltName = DNS:$SERVER_FQDN" \
 
 # values pulled from server.xml within the image, and errors from the docker log
 keytool -genkey \
@@ -65,8 +70,8 @@ keytool -genkey \
   -keystore init/application.keystore \
   -keysize 2048 \
   -storepass password \
-  -dname "cn=keycloak-guac.winllc-dev.com, ou=Dev, o=WIN LLC, c=US" \
-  -ext "SAN=DNS:keycloak-guac.winllc-dev.com" \
+  -dname "cn=$SERVER_FQDN, ou=Dev, c=US" \
+  -ext "SAN=DNS:$SERVER_FQDN" \
   -keypass password \
   -trustcacerts \
   -validity 365
@@ -100,11 +105,16 @@ keytool -importcert \
   -file init/guacamole.crt \
   -trustcacerts -noprompt
 
-keytool -importcert \
-  -alias windows-ca \
-  -keystore init/cacerts \
-  -storepass changeit \
-  -file windows-ad-trust.cer \
-  -trustcacerts -noprompt
+TRUST_FILES="./config/trust/*"
+
+for f in $TRUST_FILES
+do
+  keytool -importcert \
+    -alias $f \
+    -keystore init/cacerts \
+    -storepass changeit \
+    -file $f \
+    -trustcacerts -noprompt
+done
 
 docker stop keycloak-cacerts

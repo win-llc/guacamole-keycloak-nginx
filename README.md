@@ -4,6 +4,10 @@ Docker compose project with keycloak and guacamole. Based off of https://github.
 ## To get started with no configurations, run 
 
 ```
+(Optional) If you will be connecting Keycloak to Active Directory, add relevant LDAPS Trust Certificates into config/trust/<file>.cer
+
+export SERVER_FQDN=<your server FQDN>
+
 ./setup.sh
 
 docker-compose up

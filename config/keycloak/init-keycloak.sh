@@ -9,7 +9,7 @@
   -s enabled=true \
   -s email=guacadmin@guacadmin \
   -r master \
-  --server https://guac-keycloak.winllc-dev.com:8443/auth \
+  --server http://localhost:8080/auth \
   --realm master \
   --user admin \
   --password admin
@@ -20,7 +20,7 @@
   --username guacadmin@guacadmin \
   --new-password guacadmin \
   -r master \
-  --server https://guac-keycloak.winllc-dev.com:8443/auth \
+  --server http://localhost:8080/auth \
   --realm master \
   --user admin \
   --password admin
@@ -31,7 +31,7 @@
   --uusername guacadmin@guacadmin \
   --rolename admin \
   -r master \
-  --server https://guac-keycloak.winllc-dev.com:8443/auth \
+  --server http://localhost:8080/auth \
   --realm master \
   --user admin \
   --password admin
@@ -43,7 +43,7 @@
   -s clientId=guacamole
   -s enabled=true
   -r master \
-  --server https://guac-keycloak.winllc-dev.com:8443/auth \
+  --server http://localhost:8080/auth \
   --realm master \
   --user admin \
   --password admin
