@@ -1098,7 +1098,7 @@
     "org.keycloak.storage.UserStorageProvider": [
       {
         "id": "b0027637-1f76-45b1-ba98-51833385fda2",
-        "name": "WINLLC Active Directory",
+        "name": "Active Directory",
         "providerId": "ldap",
         "subComponents": {
           "org.keycloak.storage.ldap.mappers.LDAPStorageMapper": [

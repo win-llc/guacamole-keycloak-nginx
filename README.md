@@ -4,7 +4,8 @@ Docker compose project with keycloak and guacamole. Based off of https://github.
 ## To get started with no configurations, run 
 
 ```
-(Optional) If you will be connecting Keycloak to Active Directory, add relevant LDAPS Trust Certificates into config/trust/<file>.cer
+(Optional) If you will be connecting Keycloak to Active Directory, add relevant 
+LDAPS Trust Certificates into config/trust/<file>.cer
 
 export SERVER_FQDN=<your server FQDN>
 
@@ -13,9 +14,11 @@ export SERVER_FQDN=<your server FQDN>
 docker-compose up
 ```
 
-### Trust the certs
-
-Please add init/guacamole.crt and init/keycloak.crt to your trusted certificates.
+## Add Domain Admin Group as Guacamole System Administrator
+```
+docker cp config/guacamole/add-domain-admin-group.sql guacamole-keycloak-nginx_postgres_1:/tmp/add-domain-admin-group.sql
+docker exec -i -e PGPASSWORD=some_password guacamole-keycloak-nginx_postgres_1 psql postgresql://guacamole_user:some_password@localhost:5432/guacamole_db -f tmp/add-domain-admin-group.sql
+```
 
 ### Create the guacadmin user in keycloak
 
