@@ -1,6 +1,8 @@
 # guacamole-keycloak-nginx
 Docker compose project with keycloak and guacamole. Based off of https://github.com/cynthia-rempel/guacamole-compose
 
+By default the Lab realm in Keycloak is configured to use email authentication by implementing keycloak-otp-login (https://github.com/intensiongmbh/keycloak-otp-login)
+
 ## To get started with no configurations, run 
 
 ```
@@ -9,7 +11,9 @@ LDAPS Trust Certificates into config/trust/<file>.cer
 
 export SERVER_FQDN=<your server FQDN>
 
-./setup.sh
+source ./setup.sh
+
+NOTE: Copy the Keycloak Admin Password that is output. Use this to login with the 'admin' account.
 
 docker-compose up
 ```
@@ -19,51 +23,6 @@ docker-compose up
 docker cp config/guacamole/add-domain-admin-group.sql guacamole-keycloak-nginx_postgres_1:/tmp/add-domain-admin-group.sql
 docker exec -i -e PGPASSWORD=some_password guacamole-keycloak-nginx_postgres_1 psql postgresql://guacamole_user:some_password@localhost:5432/guacamole_db -f tmp/add-domain-admin-group.sql
 ```
-
-### Create the guacadmin user in keycloak
-
-```
-# Add the guacadmin user to keycloak with an email
-docker exec guacamole-compose_keycloak_1 \
-  /opt/jboss/keycloak/bin/kcadm.sh \
-  create users \
-  -s username=guacadmin@guacadmin \
-  -s enabled=true \
-  -s email=guacadmin@guacadmin \
-  -r master \
-  --server https://<host.domain>:8443/auth \
-  --realm master \
-  --user admin \
-  --password admin
-
-# Set the password
-docker exec guacamole-compose_keycloak_1 \
-  /opt/jboss/keycloak/bin/kcadm.sh \
-  set-password \
-  --username guacadmin@guacadmin \
-  --new-password guacadmin \
-  -r master \
-  --server https://<host.domain>:8443/auth \
-  --realm master \
-  --user admin \
-  --password admin
-
-# Make guacadmin an admin
-docker exec guacamole-compose_keycloak_1 \
-  /opt/jboss/keycloak/bin/kcadm.sh \
-  add-roles \
-  --uusername guacadmin@guacadmin \
-  --rolename admin \
-  -r master \
-  --server https://<host.domain>:8443/auth \
-  --realm master \
-  --user admin \
-  --password admin
-```
-
-In current configuration all qery and read-roles.
-
-### TODO: make "read-only" role a default role in keycloak
 
 ## To customize:
 
@@ -80,6 +39,14 @@ Then browse to:
 https://<host.domain>:8443/guacamole
 
 https://<host.domain>:8443/auth
+
+### To configure Active Directory
+In Keycloak, modify the connection settings for the 'Active Directory' connection in User Federation.
+
+Once the updates have been saved, click 'Synchronize all users'
+
+### To use Email Authentication
+Configure the SMTP settings for the 'Lab' Realm in Keycloak
 
 ### To add users
 
